@@ -12,15 +12,20 @@ app.use(bodyParser.json({ limit: '500mb', extended: true }))
 app.use(allowCors)
 
 
-io.on('connection', function(client) {  
-    console.log('Client connected...');
+io.on('connection', function(socket) {  
+    console.log('Client connected...' + socket.id);
 
-    client.on('join', function(data) {
-        console.log(data);
-        client.emit('messages', 'Hello from server');
+    socket.on('disconnect', function() {
+        console.log('user disconnected');
+    })    
+    
+    socket.on('msg', (message) => {
+        socket.emit('msg', "vindo do server " + message);
     });
+    
 });
 
-server.listen(4200);  
+
+server.listen(4000);  
 
 module.exports = app
