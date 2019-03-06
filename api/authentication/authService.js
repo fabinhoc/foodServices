@@ -7,23 +7,32 @@ const authHash = require('../../config/auth.json');
 const sigin = (req, res, next) => {
     let email = req.body.email;
     let password = req.body.password
-    
-    User.findOne({ email, password }, function (err, user) {
-        
+	
+    User.findOne({ email }, function (err, user) {
+
         if(err)
             return res.status(400).send({"error":true, "message":err.message})
 
         if(!user)
             return res.status(404).send({"error":true, "message":"User not found!"})
 
-        if(!bcrypt.compare(password, user.password))
-            return res.status(400).send({"error":true, "message":"Invalid password!"})
 
-        user.password = undefined
+		bcrypt.compare(password, user.password, function(err, isPasswordMatch) {
+			if (err) 
+				return callback(err);
+			
+			user.password = undefined
 
-        token = tokenGenerate({id: user.id})
+			token = tokenGenerate({id: user.id})
+	
+			return res.json({ user, token });	 
+			// return callback(null, isPasswordMatch);
+		});
 
-        res.send({ user, token });
+        // if(!bcrypt.compare(password, user.password))
+        //     return res.status(400).send({"error":true, "message":"Invalid password!"})
+
+        
 
     }).select('+password');
    
