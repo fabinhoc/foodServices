@@ -14,12 +14,16 @@ const sigin = (req, res, next) => {
             return res.status(400).send({"error":true, "message":err.message})
 
         if(!user)
-            return res.status(404).send({"error":true, "message":"User not found!"})
+            return res.status(404).send({"error":true, "message":"User/password incorrect!"})
 
 
 		bcrypt.compare(password, user.password, function(err, isPasswordMatch) {
+			
 			if (err) 
-				return callback(err);
+				return res.status(404).send({"error":true, "message":"User not found!"})
+			
+			if (!isPasswordMatch)
+				return res.status(404).send({"error":true, "message":"User/password incorrect!"})
 			
 			user.password = undefined
 
