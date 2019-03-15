@@ -14,12 +14,12 @@ router.get('/', function(req, res){
 router.post('/authentication', authService.sigin)
     
 // MIDDLEWARE TO AUTHENTICATION
-router.use(authService.auth);
+// router.use(authService.auth);
 
 // ALL THE ROUTES IS AUTHENTICATED 
-router.post('/users', userService.save)
-router.get('/users', userService.findAll)
-router.get('/user/:id', userService.findById)
+router.post('/users', authService.auth, userService.save)
+router.get('/users', authService.auth, userService.findAll)
+router.get('/user/:id', authService.auth, userService.findById)
 
 module.exports = router;  
 
