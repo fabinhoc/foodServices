@@ -13,15 +13,19 @@ app.use(allowCors)
 
 
 io.on('connection', function(socket) {  
-    console.log('Client connected...' + socket.id);
+	console.log('Client connected...' + socket.id);
 
-    socket.on('disconnect', function() {
-        console.log('user disconnected');
-    })    
-    
-    socket.on('msg', (message) => {
-        socket.emit('msg', "vindo do server " + message);
-    });
+	socket.on('disconnect', function() {
+		console.log('user disconnected');
+	})
+	
+	socket.on('msg', (message) => {
+		socket.emit('msg', "vindo do server " + message);
+	});
+	
+	socket.on('userConnected', (userId) => {
+		socket.broadcast.emit('userConnected', userId);
+	})
     
 });
 
