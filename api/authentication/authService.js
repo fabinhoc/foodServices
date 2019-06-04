@@ -1,10 +1,12 @@
 const bcrypt = require('bcrypt-nodejs');
 const jwt = require('jsonwebtoken');
+const server = require('../../config/server');
 
 const User = require('../users/user');
 const authHash = require('../../config/auth.json');
 
 const sigin = (req, res, next) => {
+
     let email = req.body.email;
     let password = req.body.password
 	
@@ -28,7 +30,7 @@ const sigin = (req, res, next) => {
 			user.password = undefined
 
 			token = tokenGenerate({id: user.id})
-	
+				
 			return res.json({ user, token });	 
 			// return callback(null, isPasswordMatch);
 		});
@@ -75,4 +77,22 @@ const auth = (req, res, next) => {
     })
 }
 
-module.exports = {sigin, tokenGenerate, auth}
+const saveSocket = (req, res, next) => {
+
+	let userId = req.body.userId;
+    let socketId = req.body.socketId;
+
+	User.findById(userId, function (err, user) {
+        if (err)
+            res.status(400).send({"error":true, "message": err.message})
+        
+        User.updateOne({_id: userId}, {$set: {socketId:socketId}}, (err, user) => {
+			if (err)
+				return res.status(400).send({"error":true, "message": err.message})
+			else 
+				return res.status(200).send({"error":false, "message": user})
+		}) 
+    });
+}
+
+module.exports = {sigin, tokenGenerate, auth, saveSocket}

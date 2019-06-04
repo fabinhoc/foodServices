@@ -5,6 +5,7 @@ const mongoose = restful.mongoose
 const Schema = mongoose.Schema
 
 const userSchema = new mongoose.Schema({
+	socketId:	{type: String},
     name:       {type: String, required: true},
     username:   {type: String, required: true, unique: true},
     email:      {type: String, required: true, lowercase: true, unique: true},

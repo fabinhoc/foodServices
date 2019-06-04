@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt-nodejs')
-
+const server = require('../../config/server')
 const User = require('./user')
 const AuthService = require('../authentication/authService')
 
@@ -39,14 +39,15 @@ const save = (req, res, next) => {
     });
 }
 
+
 // RETURN ALL USERS
 const findAll = (req, res, next) => {
     User.find((err, users) => {
         if(err)
             res.status(400).send({"error":true, "message": err.message})
-        
-        res.json(users);
-
+				
+		res.json(users);
+		
     });
 }
 
