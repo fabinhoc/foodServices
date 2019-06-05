@@ -47,8 +47,6 @@ io.on('connection', function(socket) {
 	// 	socket.emit('setSocket', socket.id);
 	// })
 
-	
-    
 });
 
 
