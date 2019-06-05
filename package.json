@@ -8,7 +8,7 @@
     "production": "pm2 start loader.js --name application"
   },
   "start":{
-	"command": "nodemon"
+	"command": "nodemon ./loader.js"
   },
   "start:prod":{
 	"command": "pm2 start loader.js --name application"
